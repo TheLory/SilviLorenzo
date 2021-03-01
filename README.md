@@ -1,2 +1,2 @@
 # SilviLorenzo
-repo del corso di sistemi digitali
+repo del corso di ingegneria dei sistemi software
