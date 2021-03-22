@@ -86,6 +86,13 @@ kc{
     color: #008000	;
 	font-size: 90%;
 }
+div.pre{
+    font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
 pre{
 	font-family: "Consolas";
 	font-size: 85%;
@@ -261,44 +268,58 @@ when the robot reachs its <ks>HOME</ks> again, the application <i>shows the robo
  </tbody>
 </table>
 
+
  
 </div>
 
 <h2>Requirement analysis</h2>
 <div class="remark">
+    dall'interazione con il cliente sono stati chiariti i seguenti termini:
     <ul>
-        <li><ks>room</ks>: una convensionale stanza (rettangolare) di una casa</li>
-        <li><ks>boundary</ks>: il perimetro della stanza delimitato da solide pareti;</li>
-        <li><ks>robot</ks>: dispositivo in grado si eseguire comandi inviati attraverso la rete, descritti nel documento 
-            <a href="VirtualRobot2021.html#commands" target="web"><em>VirtualRobot2021.html</em></a> consegnato dal cliente; </li>
-        <li><ks>walk</ks>: in base alle specifiche nel documento <a href="VirtualRobot2021.html#commands" target="web"><em>VirtualRobot2021.html</em></a>, il robot può muoversi in avanti, indietro, a destra di 90° e a sinistra di 90°. </li>
-        <li><ks>user control</ks>: l'utente può controllare il robot attraverso dei comandi</li>
-        <li><ks>HOME</ks>: posizione iniziale del robot</li>
-        <li><ks>consoleGUI</ks>: Interfaccia grafica che l'utente può utilizzare per controllare il movimento del robot, tramite i comandi di STOP e RESUME</li>
-        <li><ks>robot-moves history</ks>: dato che specifica le mosse compiute dal robot</li>
-        <li><ks>RESUME</ks>: comando che può essere utilizzato dall'utente per iniziare o continuare a muoversi lungo il perimetro della stanza</li>
-        <li><ks>STOP</ks>: comando che può essere utilizzato dall'utente per interrompere il movimento, lungo il perimetro della stanza, del robot</li>
+        <li><ks>Robot:</ks> dispositivo in grado di eseguire comandi inviati da un utente utilizzatore, le specifiche dettagliate sono disponibili nel documento <a href="https://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/master/it.unibo.virtualRobot2020/userDocs/VirtualRobot2021.html" target="lab"><em>VirtualRobot2021.html</em></a>;</li>
+        <li><ks>Room:</ks> una stanza convenzionale (rettangolare) che si può trovare in qualsiasi appartamento</ks>;</li>
+        <li><ks>Boundary:</ks> confine della stanza, che è solitamente delimitato da delle parte;</li>
+        <li><ks>Walk:</ks> movimento del robot, in base alle specifiche riportate in <a href="https://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/master/it.unibo.virtualRobot2020/userDocs/VirtualRobot2021.html" target="lab"><em>VirtualRobot2021.html</em></a> esso può muoversi avanti indietro e ruotare a destra e sinistra di novanta gradi;</li>
+        <li><ks>User control:</ks> comandi inviati dall'utente che intende comandare il robot per imporre un comportamento;</li>
+        <li><ks>Home:</ks> posizione della stanza in cui il robot viene posizionato al suo primo inserimento nella stanza;</li>
+        <li><ks>consoleGui:</ks> interfaccia grafica che permette all'utente utilizzatore di inviare o un comando Resume o un comando di Stop;</li>
+        <li><ks>robot-moves history:</ks> struttura dati non ancora definita in grado di tenere traccia dei movimenti che questo ad effettuato. quando il robot passa per la posizione home deve essere mostrata su standard output;</li>
+        <li><ks>Resume:</ks> comando che impone al robot di iniziare a muoversi o di riprendere il movimento in seguito ad uno Stop;</li>
+        <li><ks>Stop:</ks> comando che impone al robot di interrompere il suo movimento.</li>
+    </ul>
 </div>
+
 
 </div>
 
 <h2>Problem analysis</h2>
-Da notare che:
-<ol>
-    <li>Per il funzionamento dell'aplicazione, basandoci sulle specifiche dell'utente, il robot potrà muoversi solamente in avanti e ruatare a sinistra.</li>
-    <li>In base alle richieste dell'utente, ricevute dall'applicazione tramite la consoleGUI, il robot potrà ricevere i comandi di movimento in due modi:</li>
-        <ul>
-            <li>tramite l'invio di messaggi alla porta <tt>8090</tt> usando  <ks>HTTP POST</ks> </li>
-            <li>tramite l'invio di messaggi alla porta <tt>8091</tt> usando una <ks>websocket</ks> </li>
-        </ul>
-    <li>Per quanto riguarda il livello tecnologico, ci sono molte librerie in molti linguaggi di programmazione che supportano i protocolli richiesti.</li>
-</ol><br/>
+Viene sottolineato che:
+    <ol>
+        <li>per il funzionamento dell'applicazione è sufficiente che il robot si muova in avanti e possa effettuare una rotazione di novanta gradi a sinistra;</li>
+        <li>i comandi invaiti al robot per eseguire il cammino lungo il perimetro della stanza possono essere inviati mediante due protocolli di comunicazione: 
+                <ul>
+                    <li>inviando messaggi alla porta <tt>8090</tt> usando il protocollo <ks>HTTP</ks> con il metodo <ks>POST</ks></li>
+                    <li>inviando messaggi alla porta <tt>8091</tt> usando una <ks>webSocket</ks></li>
+                </ul>
+        </li>
+        <li>con riferimento al livello tecnologico, ci sono diverse libreria in vari linguaggi di programmazione chiariscesuppportano i protocolli utilizzabili
+            per la comunicazione con il robot.
+                <ul>
+                    <li>
+                        <div class="remark">
+                            sebbene il problema introduce un'abstraction gap a livello concettuale, non essendoci requisiti che impongono una tipologia di comunicazione preferibile,
+                            si opterà per l'utilizzo di protocolli del tipo <ks>Request Response</ks> o <ks>fire and forget</ks>.
+                        </div>
+                    </li>
+                </ul>
+        </li>
+    </ol>
 
-<div class="remark">Sebbene il problema introduce un'abstraction gap a livello concettuale, non essendoci requisiti che impongono una tipologia 
-    di comunicazione preferibile, si opterà per l'utilizzo di protocolli del tipo Request Response o Fire and Forget</div><br/>
+   
 
 The following resources could be usefully exploited to reduce the development time of a first prototype of the application:
-
+<a href="../../it.unibo.virtualrobotclient/app/src/main/java/it/unibo/wenv/RobotInputController.java" target="code">RobotInputController.java</a>  
+(in projec
 <ol>
 <li>The  <a href="../../it.unibo.virtualrobotclient/app/src/main/java/it/unibo/consolegui/Consolegui.java" target="code">Consolegui.java</a>  
 (in project <a href="../../it.unibo.virtualrobotclient/app/src/main/java/it/unibo/consolegui" target="code">it.unibo.virtualrobotclient</a>) </li>
@@ -307,38 +328,43 @@ The following resources could be usefully exploited to reduce the development ti
 (in project <a href="../../it.unibo.virtualrobotclient/app/src/main/java/it/unibo/wenv" target="code">it.unibo.virtualrobotclient</a>) </li>
 
 
-<li>The  <a href="../../it.unibo.virtualrobotclient/app/src/main/java/it/unibo/wenv/RobotInputController.java" target="code">RobotInputController.java</a>  
-(in project <a href="../../it.unibo.virtualrobotclient/app/src/main/java/it/unibo/wenv" target="code">it.unibo.virtualrobotclient</a>) </li>
+<li>The  t <a href="../../it.unibo.virtualrobotclient/app/src/main/java/it/unibo/wenv" target="code">it.unibo.virtualrobotclient</a>) </li>
 </ol>
 
 <h3>Logical architecture</h3>
-<table style="width:98%">
-    <tbody>	
-        <tr>
-            <td style="width:60%">
-            Si dovrà progettare ed implementare un <k>sistema distribuito</k> con due componenti software:
-            <ol>
-            <li>il <a href="VirtualRobot2021.html" target="web"><ks>VirtualRobot</ks></a>, fornito dal cliente</li>
-            <li>la nostra <ks>resumableBoundaryWalker</ks> applicazione che invierà i comandi al VirtualRobot utilizzando o l'<i>HTTP-POST</i> o le <i>websocket</i></li>
-            </ol>
-            Un primo schema dell'architettura logica dei sistemi può essere definito come mostrato in figura
-            (per il significato dei simboli, vedere la <a href="./img/legenda.png" target="web">legenda</a>)
-            </td>
-            <td>  <center><img src="./img/logicArch0.png" alt="logicArch0" width="100%" ></center>
-            </td>
-        </tr>
-    </tbody>
-    </table>
-    <pre>
-        definiamo la <kc>enum delle direzioni {UP,DOWN,LEFT,RIGHT}</kc>
-        il robot parte dalla posizione HOME, direzione=DOWN
-        il robot inizia a muoversi quando l'utente invia il comando RESUME
-        per il movimento del robot intorno al perimetro, per 4 volte: 
-            1) invio al robot il comando per andare avanti fino a che non viene rilevata la collisione con la parete
-            2) invio al robot il comando per girare a sinistra
-        se l'utente invia il comando STOP, il robot dovrà fermarsi, in attesa di un successivo comando RESUME
-        quando il robot torna nella posizione HOME viene stampato lo "storico delle mosse"
-    </pre>
+<table>
+    <tr>
+    <td>
+        si dovrà progettare ed implementare un sistema distribuito formato da due macro componenti:
+        <ol>
+            <li> il <a href="https://htmlpreview.github.io/?https://github.com/anatali/issLab2021/blob/master/it.unibo.virtualRobot2020/userDocs/VirtualRobot2021.html" target="lab"><em>VirtualRobot2021</em></a> reso disponibile dal cliente </li>
+            <li> la nostra applicazione <ks>resumableBoundaryWalker</ks> che può interagire con il robot o tramite protocollo <ks>Request-Response</ks> sfruttando <ks>HTTP-POST</ks> o con un protocollo di comunicazione asincrono avvelendosi delle <ks>webSocket</ks> </li>
+        </ol>
+    </td>
+    <td>
+        <img src="img/logicArch0.png" width="85%" >
+    </td>
+    </tr>
+</table>
+    <br>
+    Viene osservato inoltre che:
+    <ul>
+        
+    
+            <div class="pre">
+                definito enum direzioni {AVANTI,SINISTRA}<br>
+                    il robot viene posizionato nella posizione HOME, in attesa che l'utente tramite la consoleGUI prema il pulsante <ks>RESUME</ks>>.<br>
+                    una volta ricevuto tale comando, per quattro volte:<br>
+                        <ol>
+                            <li>viene inviato al robot il comando di muoversi in avanti fino a che non viene riscontrata una collisione.<br></li>
+                            <li>si invia al robot il comando di girare a sinistra.<br> </li>
+                        </ol>
+                    se durante il cammino del robot, viene inviato il comando di <ks>STOP</ks>, questo dovrà fermarsi, in attesa di una successiva resume, dopo la quale riprenderà
+                    riprenderà ad effettuare il movimento lungo il confine della stanza.<br>
+                    quando il robot passa per la sua posizione di home dovrà essere stampato lo storico dei movimenti eseguiti dal robot
+                </div>
+    
+    </ul>
 <br/><br/>
 
 The expected time required for the development of the application is (no more than) 6 hours.
@@ -353,9 +379,9 @@ The expected time required for the development of the application is (no more th
  
 
 <h2>Deployment</h2> 
-La distribuzione consiste nel commit dell'applicazione su un progetto denominato <ks>it.unibo.resumableBoundaryWalker</ks> del repository <a style="color:blue" href="https://github.com/luigi-mac/MaccalliniLuigi.git">MaccalliniLuigi</a>.
+The deployment consists in the commit of the application on a project named <ks>iss2021_resumablebw</ks> consultabel at the following repository <a href="https://github.com/TheLory/SilviLorenzo">Silvi_Lorenzo_resumable_boundary_walker</a>.
 <br/><br/>
-Il commit finale è stato eseguito dopo <k>6</k> ore di lavoro.
+The final commit commit has done after <k>6</k> hours of work.
  
 <h2>Maintenance</h2> 
  
@@ -392,10 +418,9 @@ ECCEDE nelle dimensioni del file (al momento > 1600Kb)
 <br/><br/> 	
 </div>  
 
-<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:left;color:white">
-    <hr/>
-    By Luigi Maccallini 
-    <img src="./img/lm.jpg" alt="lm" width="15%" height="15%"> luigi.maccallini@studio.unibo.it 	|	<a style="color:white" href="https://github.com/luigi-mac/MaccalliniLuigi.git">Repo GitHub</a> 
+<div style="background-color:rgba(86, 56, 253, 0.9); color:white">
+By Lorenzo email: lorenzo.silvi@studio.unibo.it  
+<img src="./img/foto_profilo.jpg" alt="teacher" width="10%" height="10%">
 </div> 
 </body>
 </html>
