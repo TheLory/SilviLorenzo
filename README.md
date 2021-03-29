@@ -1,2 +1,2 @@
 # SilviLorenzo
-repository del corso di laure in Ingegneria Informatica
+repository del corso di laurea in Ingegneria Informatica
