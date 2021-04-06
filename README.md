@@ -1,2 +1,2 @@
 # SilviLorenzo
-repo del corso di ingegneria dei sistemi software
+repository del corso di laurea in Ingegneria Informatica
